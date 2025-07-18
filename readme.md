@@ -1,114 +1,91 @@
-## Ubuntu 24.04
+# 🐧 Ubuntu 24.04 Vagrant Boxes
 
-Ubuntu 24.04
-Ce dépôt contient les fichiers Packer nécessaires pour construire des boxes Vagrant Ubuntu 24.04 pour l’architecture AMD64.
+Ce dépôt contient les fichiers [Packer](https://www.packer.io/) nécessaires à la construction de boxes **Vagrant** pour **Ubuntu 24.04**, compatibles avec les architectures **AMD64** et **ARM64**.
 
-Construire la box
-# Initialiser les dépendances Packer
+---
+
+## 🛠️ Construction des boxes
+
+### 🔧 Dépendances Packer
+
+Initialiser les fichiers Packer :
+```bash
 packer init ubuntu-amd64.pkr.hcl
+```
 
-# Construire la box AMD64
+### ⚙️ Construire la box AMD64
+```bash
 packer build -var-file="amd64.pkrvars.hcl" ubuntu-amd64.pkr.hcl
-Avec le débogage activé
+```
+
+### 🐞 Mode débogage
+```bash
 PACKER_LOG=debug PACKER_LOG_PATH=ubuntu.log \
-  packer build -var-file="amd64.pkrvars.hcl" ubuntu-amd64.pkr.hcl
-Packer démarre l’image Ubuntu, l’installe et la configure pour Vagrant ; les artefacts générés se trouvent dans le répertoire output-vagrant/.
-
-Tester la box Vagrant
-Installer la box locale :
-
-vagrant box add ubuntu_24_04 output-vagrant/ubuntu-24-04-amd64.box
-Créer un projet de test :
-
-mkdir vagrant_project && cd vagrant_project
-Initialiser le Vagrantfile :
-
-vagrant init ubuntu_24_04
-Démarrer l’environnement Ubuntu :
-
-vagrant up --provider 
-
-
-### DOC officiel Hashicorp_education 
-This repository contains the Packer files to build Ubuntu 24.04 Vagrant boxes
-for ARM64 and AMD64.
-
-To build the Vagrantboxes, enter the following commands:
-
-```
-packer init ubuntu-arm64.pkr.hcl
-packer build -var-file="arm64.pkrvars.hcl" ubuntu-arm64.pkr.hcl
 packer build -var-file="amd64.pkrvars.hcl" ubuntu-amd64.pkr.hcl
 ```
 
-With debugging:
+Les artefacts sont générés dans le dossier `output-vagrant/`.
 
+---
+
+## 🧪 Tester la box Vagrant
+
+### 📦 Installation locale
+```bash
+vagrant box add ubuntu_24_04 output-vagrant/ubuntu-24-04-amd64.box
 ```
-PACKER_LOG=debug PACKER_LOG_PATH=ubuntu.log packer build -var-file="arm64.pkrvars.hcl" ubuntu-arm64.pkr.hcl
-PACKER_LOG=debug PACKER_LOG_PATH=ubuntu.log packer build -var-file="amd64.pkrvars.hcl" ubuntu-amd64.pkr.hcl
+
+### 🚀 Initialiser un projet de test
+```bash
+mkdir vagrant_project && cd vagrant_project
+vagrant init ubuntu_24_04
+vagrant up --provider virtualbox
 ```
 
-Packer will spin up the Ubuntu image and configure it for Vagrant. It will 
-generate the files in `output-vagrant`. 
+---
 
-For ARM64, this Packer configuration currently uses a workaround for building 
-the Vagrantbox since you cannot export VMs to OVF files in VirtualBox MacOS 
-with Silicion (ARM64).
+## 🚧 ARM64 – Configuration Spécifique (MacOS Silicon)
 
-To manually build the Vagrantbox:
+⚠️ VirtualBox ne permet pas l’export OVF sur MacOS avec ARM64.  
+Utiliser la méthode manuelle pour créer la box :
 
-```
+```bash
 cd output-vagrant
 tar -czf ubuntu-24-04-arm64.box ./metadata.json ./Vagrantfile ./box.ovf ./ubuntu-24-04-arm64-disk001.vmdk
 ```
 
-### Test Vagrantbox
-
-If you install VirtualBox on MacOS, you may need to disable this DebugLevel
-configuration. With this default configuration, VirtualBox is unable to spin
-up the ARM64 image.
-
-```
-VBoxManage setextradata global "VBoxInternal/Devices/pcbios/0/Config/DebugLevel"
+### 📥 Ajouter la box ARM64
+```bash
+vagrant box add ubuntu_24_04 output-vagrant/ubuntu-24-04-arm64.box
 ```
 
-Install the box.
-
-```
-vagrant box add ubuntu_24_04 output-vagrant/ubuntu-24-04-arm64.box 
-```
-
-Create a working "test" directory and navigate into it.
-
-```
-mkdir vagrant_project
-cd vagrant_project
-```
-
-Initialize a Vagrant project, using the `ubuntu_24_04` as the base box.
-
-```
-vagrant init ubuntu_24_04
-```
-
-Spin up your Ubuntu virtual environment
-
-```
-vagrant up --provider virtualbox
-```
-
-To clean up your environment:
-
-```
+### 🧼 Nettoyage de l’environnement
+```bash
 cd ..
 vagrant box remove ubuntu_24_04
 rm -rf vagrant_project/
 ```
 
-You may need to delete stray disks to completely clean up the Packer buidl. 
-First, list and identify the stray disks, then delete them.
-
-```
+### 🧹 Supprimer les disques VirtualBox
+```bash
 VBoxManage list hdds
 VBoxManage closemedium disk ${disk_uuid} --delete
 ```
+
+---
+
+## 📚 Ressources
+
+- [Documentation Packer](https://developer.hashicorp.com/packer/docs)
+- [Documentation Vagrant](https://developer.hashicorp.com/vagrant/docs)
+
+---
+
+## 📝 Licence
+
+Ce projet est sous licence MIT.
+
+---
+
+Happy building! 🎉
+
