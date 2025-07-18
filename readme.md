@@ -1,5 +1,35 @@
 ## Ubuntu 24.04
 
+Ubuntu 24.04
+Ce dépôt contient les fichiers Packer nécessaires pour construire des boxes Vagrant Ubuntu 24.04 pour l’architecture AMD64.
+
+Construire la box
+# Initialiser les dépendances Packer
+packer init ubuntu-amd64.pkr.hcl
+
+# Construire la box AMD64
+packer build -var-file="amd64.pkrvars.hcl" ubuntu-amd64.pkr.hcl
+Avec le débogage activé
+PACKER_LOG=debug PACKER_LOG_PATH=ubuntu.log \
+  packer build -var-file="amd64.pkrvars.hcl" ubuntu-amd64.pkr.hcl
+Packer démarre l’image Ubuntu, l’installe et la configure pour Vagrant ; les artefacts générés se trouvent dans le répertoire output-vagrant/.
+
+Tester la box Vagrant
+Installer la box locale :
+
+vagrant box add ubuntu_24_04 output-vagrant/ubuntu-24-04-amd64.box
+Créer un projet de test :
+
+mkdir vagrant_project && cd vagrant_project
+Initialiser le Vagrantfile :
+
+vagrant init ubuntu_24_04
+Démarrer l’environnement Ubuntu :
+
+vagrant up --provider 
+
+
+### DOC officiel Hashicorp_education 
 This repository contains the Packer files to build Ubuntu 24.04 Vagrant boxes
 for ARM64 and AMD64.
 
