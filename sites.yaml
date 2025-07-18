@@ -4,31 +4,3 @@ base_mac:   "080027F0F51D"
 memory:     4096               # RAM en Mo
 cpus:       2                  # nombre de vCPU
  
-# default_vboxname: "ubuntu24.04box"
-# default_cpus: '1'
-# default_memory: '512'
-# default_range: '192.168.56.1'
-# default_interface: 'vboxnet0'
-
-# provisionner_path: 'provision'
-
-# VMs:
-#   - name: 'ubuntu2404.vagrant.lan'
-#     memory: '2048'
-#     cpus: '2'
-#     vboxname: ''
-#     hostname: ''
-#     private_ip: '192.168.56.100'
-#     public_ip: '192.168.1.101'
-#     public_interface: 'wlo1'
-
-  # - {name: 's2.vagrant.lan', vboxname: 'generic/arch', hostname: 'arch-rules'}
-  # - {cpus: '2', name: 's3.vagrant.lan', memory: '1024'}
-  # - name: 'loadbalancer.vagrant.lan'
-  #   hostname: 'ubuntu-2204'
-  #   forwarded_port: '8080' # port on the host
-  #   guest_port: '80' # port on the VM
-  #   mountpoint: 'www' # dir on the host
-  #   mountpoint_path: '/var/www/html/' # path on the host
-
-  # - {name: 'services.vagrant.lan', hostname: 'ubuntu-2204'}
